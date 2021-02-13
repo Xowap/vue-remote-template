@@ -1,7 +1,6 @@
 <template>
     <div class="container">
         <ServerTemplatedComponent
-            ref="serverContent"
             :content="content"
             :components-defs="defs"
             :extract-content="extractSelector('.page-content')"
