@@ -11,7 +11,12 @@ export async function getOriginalPageFromRoute({ route }) {
 <html lang="en">
   <head>
     <title>Yo dis title for "${route.path}"</title>
-    <meta name="description" content="I like potatoes very mucho" />
+    <meta
+      hid="description"
+      name="description"
+      content="I like potatoes very mucho"
+    />
+    <link hid="canonical" rel="canonical" href="/" />
     <script>
       alert("you lost");
     </script>

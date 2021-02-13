@@ -1,9 +1,11 @@
 <template>
     <div class="container">
         <ServerTemplatedComponent
+            ref="serverContent"
             :content="content"
             :components-defs="defs"
             :extract-content="extractSelector('.page-content')"
+            @head="receiveHeadData"
         />
     </div>
 </template>
@@ -20,6 +22,14 @@ import BlockThree from "~/components/blocks/BlockThree";
 export default {
     components: { ServerTemplatedComponent },
 
+    /**
+     * Head method just copies the head data from ServerTemplatedComponent.
+     * See receiveHeadData() for more explanations.
+     */
+    head() {
+        return this.headData;
+    },
+
     data() {
         return {
             /**
@@ -34,6 +44,12 @@ export default {
              * it as a prop to ServerTemplatedComponent.
              */
             extractSelector,
+
+            /**
+             * Head data, used by the head() method and fueled by the head event
+             * from ServerTemplatedComponent. See below for explanations.
+             */
+            headData: {},
         };
     },
 
@@ -59,10 +75,25 @@ export default {
         },
     },
 
+    /**
+     * Fetches (or supposedly so) data from the original page in order to have
+     * the ServerTemplatedComponent compute its components.
+     */
     async asyncData({ route, $axios }) {
         return {
             content: await getOriginalPageFromRoute({ route, $axios }),
         };
+    },
+
+    methods: {
+        /**
+         * That's with this event handler that we can receive the head content
+         * in time before the HTML gets rendered on the server side. That's
+         * shitty but it works.
+         */
+        receiveHeadData(head) {
+            this.headData = head;
+        },
     },
 };
 </script>
