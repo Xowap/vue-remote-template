@@ -31,6 +31,7 @@ give life to however you need to execute this code on Nuxt side.
 
 In order to do so:
 
+0. Add `jsdom` to your dependencies (for the server-side)
 1. Create a component like [`BlockTwo.vue`](components/blocks/BlockTwo.vue)
    - It's a normal component for most things, including the fact that you can
      use `style`
@@ -55,3 +56,16 @@ In order to do so:
      key the name of the component and as value the component's definition
      (aka what you imported from the `.vue` file or just an object that you
      defined).
+3. Make sure that you have the following build configuration updated to load up
+   the Vue template compiler at runtime (yeah that's heavier but well what
+   choice do we have).
+
+```javascript
+export default {
+    build: {
+        extend(config) {
+            config.resolve.alias["vue$"] = "vue/dist/vue.esm.js";
+        },
+    },
+}
+```
